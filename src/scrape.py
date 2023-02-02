@@ -30,19 +30,12 @@ headers = {
 
 
 def preprocess_listings_df(df):
-    assert "hdpData" in df.columns
-    assert "latLong" in df.columns
-    assert "variableData" in df.columns
-    assert "streetViewMetadataURL" in df.columns
-    assert "streetViewURL" in df.columns
+    to_drop = []
+    for col in df.columns:
+        if col in ["hdpData", "variableData", "streetViewMetadataURL", "streetViewURL"]:
+            to_drop.append(col)
     return pd.concat([df, pd.json_normalize(df["latLong"])], axis=1).drop(
-        [
-            "latLong",
-            "hdpData",
-            "variableData",
-            "streetViewMetadataURL",
-            "streetViewURL",
-        ],
+        to_drop + ["latLong"],
         axis=1,
     )
 
