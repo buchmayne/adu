@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from sqlalchemy.engine import URL, create_engine
 
 
-def config(filename="database.ini", section="postgresql"):
+def config(filename="../database.ini", section="postgresql"):
     # create a parser
     parser = ConfigParser()
     # read config file
