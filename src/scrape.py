@@ -1,5 +1,4 @@
 import requests
-import json
 import pandas as pd
 from datetime import date
 from config import get_connection
