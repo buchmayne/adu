@@ -19,7 +19,8 @@ insert into transformed_zillow_rental_listings
 		"date_scraped" as date_scraped
 	
 	from zillow_rental_listings zrl 
-    where date_scraped = current_date
+    where 
+        date_scraped = current_date
 ;
 
 
