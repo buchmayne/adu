@@ -28,16 +28,52 @@ headers = {
     # 'TE': 'trailers',
 }
 
+zillow_columns = [
+    "zpid",
+    "id",
+    "providerListingId",
+    "imgSrc",
+    "hasImage",
+    "detailUrl",
+    "statusType",
+    "statusText",
+    "countryCurrency",
+    "price",
+    "unformattedPrice",
+    "address",
+    "addressStreet",
+    "addressCity",
+    "addressState",
+    "addressZipcode",
+    "isUndisclosedAddress",
+    "beds",
+    "baths",
+    "area",
+    "isZillowOwned",
+    "badgeInfo",
+    "isSaved",
+    "isUserClaimingOwner",
+    "isUserConfirmedClaim",
+    "pgapt",
+    "sgapt",
+    "zestimate",
+    "shouldShowZestimateAsPrice",
+    "has3DModel",
+    "hasVideo",
+    "isHomeRec",
+    "hasAdditionalAttributions",
+    "isFeaturedListing",
+    "availabilityDate",
+    "list",
+    "relaxed",
+    "date_scraped",
+    "latitude",
+    "longitude",
+]
 
-def preprocess_listings_df(df):
-    to_drop = []
-    for col in df.columns:
-        if col in ["hdpData", "variableData", "streetViewMetadataURL", "streetViewURL"]:
-            to_drop.append(col)
-    return pd.concat([df, pd.json_normalize(df["latLong"])], axis=1).drop(
-        to_drop + ["latLong"],
-        axis=1,
-    )
+
+def preprocess_listings_df(df, cols):
+    return pd.concat([df, pd.json_normalize(df["latLong"])], axis=1)[cols]
 
 
 if __name__ == "__main__":
@@ -55,7 +91,7 @@ if __name__ == "__main__":
 
     engine = get_connection()
 
-    df = preprocess_listings_df(listings)
+    df = preprocess_listings_df(df=listings, cols=zillow_columns)
 
     # write listings to db
     df.to_sql(
