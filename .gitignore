@@ -165,3 +165,6 @@ database.ini
 
 # python environment
 adu/
+
+# project notes
+notes.md
