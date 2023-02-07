@@ -1,4 +1,5 @@
 import os
+from datetime import date
 import requests
 from dotenv import load_dotenv
 import pandas as pd
@@ -13,7 +14,8 @@ portland_maps_permits_url = "https://www.portlandmaps.com/api/permit/"
 query = {
     "api_key": API_KEY,
     "search_type_Id": 8,
-    "date_to": "02/06/2023",  # date of initial download
+    "date_from": "02/06/2023",
+    "date_to": date.today().strftime("%m-%d-%Y"),
     "download": 1,
 }
 
