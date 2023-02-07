@@ -24,14 +24,17 @@ if __name__ == "__main__":
     response = requests.get(portland_maps_permits_url, params=query)
     df = pd.DataFrame(response.json()["results"])
 
-    engine = get_connection()
+    if len(df) > 0:
+        engine = get_connection()
 
-    # write permits to db
-    df.to_sql(
-        name="portland_new_construction_permits",
-        con=engine,
-        if_exists="append",
-        index=False,
-    )
+        # write permits to db
+        df.to_sql(
+            name="portland_new_construction_permits",
+            con=engine,
+            if_exists="append",
+            index=False,
+        )
 
-    print("Permits succesfully added to database")
+        print("Permits succesfully added to database")
+    else:
+        print("No new permits to add")
