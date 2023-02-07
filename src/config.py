@@ -1,8 +1,13 @@
+import os
 from configparser import ConfigParser
 from sqlalchemy.engine import URL, create_engine
 
+absolute_path = os.path.dirname(__file__)
+relative_path = "../database.ini"
+full_path = os.path.join(absolute_path, relative_path)
 
-def config(filename="../database.ini", section="postgresql"):
+
+def config(filename=full_path, section="postgresql"):
     # create a parser
     parser = ConfigParser()
     # read config file
