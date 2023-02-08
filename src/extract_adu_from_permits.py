@@ -30,28 +30,49 @@ def extract_adu_from_permits(df):
         .loc[
             lambda df_: df_["total_sqft"] <= 1_000
         ]  # 4. Has to be roughly ADU size, giving some flexibility as 800 sqft is max
+        .assign(
+            final_permit_date=lambda df_: pd.to_datetime(df_["final"]).dt.date
+        )  # format final permit date as date
     )
+
+
+def add_new_adu_permits_to_db(con):
+    """
+    Query db for new permits, then if new permits exist subset data on ADUs
+
+    Parameters
+    ----------
+        Database connection object
+
+    """
+    new_construction_permits = pd.read_sql(
+        f"""select * from portland_new_construction_permits where final>='{date.today().strftime("%Y-%m-%d")}';""",
+        con=engine,
+    )
+
+    alteration_permits = pd.read_sql(
+        f"""select * from portland_alteration_permits where final>='{date.today().strftime("%Y-%m-%d")}';""",
+        con=engine,
+    )
+
+    permits = pd.concat([new_construction_permits, alteration_permits], axis=0)
+
+    if len(permits) > 0:
+        # write permits to db
+        (
+            permits.pipe(extract_adu_from_permits).to_sql(
+                name="portland_adu_permits",
+                con=con,
+                if_exists="append",
+                index=False,
+            )
+        )
+        print(f"Permits succesfully added to portland_adu_permits table")
+    else:
+        print(f"No new permits to add to portland_adu_permits table")
 
 
 if __name__ == "__main__":
     engine = get_connection()
 
-    new_construction_permits = pd.read_sql(
-        "select * from portland_new_construction_permits;", con=engine
-    )
-    alteration_permits = pd.read_sql(
-        "select * from portland_alteration_permits;", con=engine
-    )
-    new_construction_adu_permits = extract_adu_from_permits(new_construction_permits)
-    alteration_adu_permits = extract_adu_from_permits(alteration_permits)
-
-    adu_permits = pd.concat(
-        [new_construction_adu_permits, alteration_adu_permits], axis=0
-    )
-
-    adu_permits.to_sql(
-        name="portland_adu_permits",
-        con=engine,
-        if_exists="append",
-        index=False,
-    )
+    add_new_adu_permits_to_db(con=engine)
