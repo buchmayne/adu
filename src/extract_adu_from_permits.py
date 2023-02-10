@@ -36,23 +36,20 @@ def extract_adu_from_permits(df):
     )
 
 
-def add_new_adu_permits_to_db(con):
+def add_new_adu_permits_to_db():
     """
-    Query db for new permits, then if new permits exist subset data on ADUs
-
-    Parameters
-    ----------
-        Database connection object
+    Query db for new permits, then if new permits exist subset data on ADUs and add to database
 
     """
+    con = get_connection()
     new_construction_permits = pd.read_sql(
         f"""select * from portland_new_construction_permits where final>='{date.today().strftime("%Y-%m-%d")}';""",
-        con=engine,
+        con=con,
     )
 
     alteration_permits = pd.read_sql(
         f"""select * from portland_alteration_permits where final>='{date.today().strftime("%Y-%m-%d")}';""",
-        con=engine,
+        con=con,
     )
 
     permits = pd.concat([new_construction_permits, alteration_permits], axis=0)
@@ -73,6 +70,4 @@ def add_new_adu_permits_to_db(con):
 
 
 if __name__ == "__main__":
-    engine = get_connection()
-
-    add_new_adu_permits_to_db(con=engine)
+    add_new_adu_permits_to_db()
