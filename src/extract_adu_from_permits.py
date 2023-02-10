@@ -36,7 +36,7 @@ def extract_adu_from_permits(df):
     )
 
 
-def add_new_adu_permits_to_db():
+def add_adu_permits_to_db():
     """
     Query db for new permits, then if new permits exist subset data on ADUs and add to database
 
@@ -70,4 +70,4 @@ def add_new_adu_permits_to_db():
 
 
 if __name__ == "__main__":
-    add_new_adu_permits_to_db()
+    add_adu_permits_to_db()
