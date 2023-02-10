@@ -76,7 +76,10 @@ def preprocess_listings_df(df, cols):
     return pd.concat([df, pd.json_normalize(df["latLong"])], axis=1)[cols]
 
 
-if __name__ == "__main__":
+def scrape_zillow():
+    """
+    Scrape data from zillow and add rental listings to database
+    """
     response = requests.get(
         "https://www.zillow.com/search/GetSearchPageState.htm?searchQueryState=%7B%22pagination%22%3A%7B%7D%2C%22mapBounds%22%3A%7B%22west%22%3A-122.89138796972657%2C%22east%22%3A-122.50000003027344%2C%22south%22%3A45.360829953851024%2C%22north%22%3A45.749318276578265%7D%2C%22regionSelection%22%3A%5B%7B%22regionId%22%3A13373%2C%22regionType%22%3A6%7D%5D%2C%22isMapVisible%22%3Atrue%2C%22filterState%22%3A%7B%22isForSaleByAgent%22%3A%7B%22value%22%3Afalse%7D%2C%22isForSaleByOwner%22%3A%7B%22value%22%3Afalse%7D%2C%22isNewConstruction%22%3A%7B%22value%22%3Afalse%7D%2C%22isForSaleForeclosure%22%3A%7B%22value%22%3Afalse%7D%2C%22isComingSoon%22%3A%7B%22value%22%3Afalse%7D%2C%22isAuction%22%3A%7B%22value%22%3Afalse%7D%2C%22isForRent%22%3A%7B%22value%22%3Atrue%7D%2C%22isAllHomes%22%3A%7B%22value%22%3Atrue%7D%2C%22keywords%22%3A%7B%22value%22%3A%22ADU%22%7D%2C%22sqft%22%3A%7B%22max%22%3A1000%7D%7D%2C%22isListVisible%22%3Atrue%2C%22mapZoom%22%3A11%7D&wants={%22cat1%22:[%22listResults%22,%22mapResults%22]}&requestId=14",
         cookies=cookies,
@@ -99,3 +102,7 @@ if __name__ == "__main__":
     )
 
     print("Listings succesfully added to database")
+
+
+if __name__ == "__main__":
+    scrape_zillow()
