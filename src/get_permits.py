@@ -58,7 +58,10 @@ def add_permits_to_db(query, tbl_name, con):
         print(f"No new permits to add to {tbl_name} table")
 
 
-if __name__ == "__main__":
+def get_permits():
+    """
+    Add new permits for both new construction and alterations
+    """
     # CONNECT TO DB
     engine = get_connection()
 
@@ -74,3 +77,7 @@ if __name__ == "__main__":
         tbl_name="portland_alteration_permits",
         con=engine,
     )
+
+
+if __name__ == "__main__":
+    get_permits()
