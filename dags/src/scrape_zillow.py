@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 from datetime import date
-from .config import get_connection
+from config import get_connection
 
 cookies = {
     "zguid": "24|%24d1ca2ccb-2f2f-4117-836a-69c85ce3ea50",

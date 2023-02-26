@@ -1,6 +1,6 @@
 from datetime import date
 import pandas as pd
-from .config import get_connection
+from config import get_connection
 
 
 def extract_adu_from_permits(df):

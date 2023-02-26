@@ -3,7 +3,7 @@ from datetime import date
 import requests
 from dotenv import load_dotenv
 import pandas as pd
-from .config import get_connection
+from config import get_connection
 
 load_dotenv()
 API_KEY = os.getenv("PORTLAND_MAPS_API_KEY")
