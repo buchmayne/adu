@@ -4,6 +4,9 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
 from src.scrape_zillow import scrape_zillow
+from config import get_connection
+
+engine = get_connection()
 
 with DAG(
     "listings_dag",
@@ -13,7 +16,9 @@ with DAG(
 ) as dag:
 
     scrape_zillow = PythonOperator(
-        task_id="scrape_zillow", python_callable=scrape_zillow
+        task_id="scrape_zillow",
+        python_callable=scrape_zillow,
+        op_kwargs={"engine": engine},
     )
 
     insert_tbl_transformed_zillow_rental_listings = PostgresOperator(
