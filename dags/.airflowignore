@@ -1,3 +1,4 @@
 src/
 sql/
 database.ini
+config.py
