@@ -1,7 +1,6 @@
 import requests
 import pandas as pd
 from datetime import date
-from config import get_connection
 
 cookies = {
     "zguid": "24|%24d1ca2ccb-2f2f-4117-836a-69c85ce3ea50",
@@ -76,7 +75,7 @@ def preprocess_listings_df(df, cols):
     return pd.concat([df, pd.json_normalize(df["latLong"])], axis=1)[cols]
 
 
-def scrape_zillow():
+def scrape_zillow(**kwargs):
     """
     Scrape data from zillow and add rental listings to database
     """
@@ -92,11 +91,10 @@ def scrape_zillow():
     # add date to dataframe before writing to db
     listings["date_scraped"] = date.today()
 
-    engine = get_connection()
-
     df = preprocess_listings_df(df=listings, cols=zillow_columns)
 
     # write listings to db
+    engine = kwargs["engine"]
     df.to_sql(
         name="zillow_rental_listings", con=engine, if_exists="append", index=False
     )

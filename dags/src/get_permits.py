@@ -1,12 +1,13 @@
 import os
 from datetime import date
 import requests
-from dotenv import load_dotenv
-import pandas as pd
-from config import get_connection
 
-load_dotenv()
-API_KEY = os.getenv("PORTLAND_MAPS_API_KEY")
+# from dotenv import load_dotenv
+import pandas as pd
+from config import PORTLAND_MAPS_API_KEY as API_KEY
+
+# load_dotenv()
+# API_KEY = os.getenv("PORTLAND_MAPS_API_KEY")
 
 
 portland_maps_permits_url = "https://www.portlandmaps.com/api/permit/"
@@ -58,12 +59,12 @@ def add_permits_to_db(query, tbl_name, con):
         print(f"No new permits to add to {tbl_name} table")
 
 
-def get_permits():
+def get_permits(**kwargs):
     """
     Add new permits for both new construction and alterations
     """
     # CONNECT TO DB
-    engine = get_connection()
+    engine = kwargs["engine"]
 
     # NEW CONSTRUCTION PERMITS
     add_permits_to_db(

@@ -1,6 +1,5 @@
 from datetime import date
 import pandas as pd
-from config import get_connection
 
 
 def extract_adu_from_permits(df):
@@ -36,12 +35,12 @@ def extract_adu_from_permits(df):
     )
 
 
-def add_adu_permits_to_db():
+def add_adu_permits_to_db(**kwargs):
     """
     Query db for new permits, then if new permits exist subset data on ADUs and add to database
 
     """
-    con = get_connection()
+    con = kwargs["engine"]
     new_construction_permits = pd.read_sql(
         f"""select * from portland_new_construction_permits where final>='{date.today().strftime("%Y-%m-%d")}';""",
         con=con,
