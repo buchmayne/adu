@@ -1,19 +1,15 @@
 import os
 from datetime import date
 import requests
-
-# from dotenv import load_dotenv
 import pandas as pd
-from config import PORTLAND_MAPS_API_KEY as API_KEY
 
-# load_dotenv()
-# API_KEY = os.getenv("PORTLAND_MAPS_API_KEY")
+from config import PORTLAND_MAPS_API_KEY
 
 
 portland_maps_permits_url = "https://www.portlandmaps.com/api/permit/"
 
 new_construction_query = {
-    "api_key": API_KEY,
+    "api_key": PORTLAND_MAPS_API_KEY,
     "search_type_Id": 8,
     "date_from": "02/06/2023",
     "date_to": date.today().strftime("%m-%d-%Y"),
@@ -21,7 +17,7 @@ new_construction_query = {
 }
 
 alteration_query = {
-    "api_key": API_KEY,
+    "api_key": PORTLAND_MAPS_API_KEY,
     "search_type_Id": 5,
     "date_from": "02/07/2023",
     "date_to": date.today().strftime("%m-%d-%Y"),

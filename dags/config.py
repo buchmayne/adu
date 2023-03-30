@@ -1,36 +1,16 @@
-from configparser import ConfigParser
 from sqlalchemy.engine import URL, create_engine
+from airflow.models import Variable
 
-
-# def config():
-#     # create a parser
-#     parser = ConfigParser()
-#     # read config file
-#     parser.read("database.ini")
-
-#     db = {}
-#     if parser.has_section("postgresql"):
-#         params = parser.items("postgresql")
-#         for param in params:
-#             db[param[0]] = param[1]
-#     else:
-#         raise Exception(
-#             "Section {0} not found in the {1} file".format("postgresql", "database.ini")
-#         )
-
-#     return db
+PORTLAND_MAPS_API_KEY = Variable.get("PORTLAND_MAPS_API_KEY")
+db = Variable.get("postgres_vals", deserialize_json=True)
 
 
 def get_connection():
     url_object = URL.create(
         drivername="postgresql+psycopg2",
-        username="postgres",
-        password="password",
-        host="adu_db_1",
-        database="postgres",
+        username=db["username"],
+        password=db["password"],
+        host=db["host"],
+        database=db["database"],
     )
     return create_engine(url_object)
-
-
-# NEED TO FIX THIS ONCE THIS IS WORKING
-PORTLAND_MAPS_API_KEY = "B923B3291E6B0DFE1BA426E8C40FA541"
