@@ -5,3 +5,5 @@ pandas==1.5.3
 python-dotenv==0.21.1
 apache-airflow==2.5.1
 apache-airflow-providers-postgres==5.4.0
+geopandas==0.12.2
+shapely==2.0.1
