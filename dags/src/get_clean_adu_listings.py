@@ -32,7 +32,7 @@ def clean_adu_listings(listings_data):
     )
 
 
-def add_clean_adu_listings_to_db(**kwargs):
+def get_clean_adu_listings(**kwargs):
     """
     Query db for ADU listings, then preprocess listings data and write to db
 
@@ -57,4 +57,4 @@ def add_clean_adu_listings_to_db(**kwargs):
 
 
 if __name__ == "__main__":
-    add_clean_adu_listings_to_db()
+    get_clean_adu_listings()
